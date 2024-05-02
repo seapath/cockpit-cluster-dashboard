@@ -6,6 +6,7 @@
 import React from 'react';
 import NodeStatus from './components/nodeStatus';
 import ClusterStatus from './components/clusterStatus';
+import ResourcesStatus from './components/ressourcesStatus';
 
 export class Application extends React.Component {
   render() {
@@ -28,6 +29,7 @@ export class Application extends React.Component {
           <div className="grid-item">
             <div>
               <h2 className="title2">Resources Status</h2>
+              <ResourcesStatus />
             </div>
           </div>
           <div className="grid-item">
