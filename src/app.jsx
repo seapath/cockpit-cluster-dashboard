@@ -4,6 +4,7 @@
  */
 
 import React from 'react';
+import NodeStatus from './components/nodeStatus';
 
 export class Application extends React.Component {
   render() {
@@ -14,6 +15,7 @@ export class Application extends React.Component {
           <div className="grid-item">
             <div>
               <h2 className="title2">Node Status</h2>
+              <NodeStatus />
             </div>
           </div>
           <div className="grid-item">
