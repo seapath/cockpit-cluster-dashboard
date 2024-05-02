@@ -1,0 +1,31 @@
+{
+  "name": "cluster-dashboard",
+  "description": "cockpit cluster dashboard",
+  "type": "module",
+  "main": "index.js",
+  "repository": "",
+  "author": "",
+  "license": "Apache-2.0",
+  "scripts": {
+    "init": "npm install && node build_init.cjs",
+    "build": "node build.js",
+    "clean": "node build_init.cjs --clean"
+  },
+  "devDependencies": {
+    "cockpit-repo": "git+https://github.com/cockpit-project/cockpit.git#d34cabacb8e5e1e028c7eea3d6e3b606d862b8ac",
+    "esbuild": "0.20.2",
+    "esbuild-plugin-copy": "2.1.1",
+    "esbuild-plugin-replace": "1.4.0",
+    "esbuild-sass-plugin": "3.2.0",
+    "npm-run-all": "^4.1.5"
+  },
+  "dependencies": {
+    "@patternfly/patternfly": "5.3.0",
+    "@patternfly/react-core": "5.3.0",
+    "@patternfly/react-icons": "5.3.0",
+    "@patternfly/react-styles": "5.3.0",
+    "fs-extra": "^11.2.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
+  }
+}
