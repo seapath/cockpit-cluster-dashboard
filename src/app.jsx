@@ -7,6 +7,7 @@ import React from 'react';
 import NodeStatus from './components/nodeStatus';
 import ClusterStatus from './components/clusterStatus';
 import ResourcesStatus from './components/ressourcesStatus';
+import CephStatus from './components/cephStatus';
 
 export class Application extends React.Component {
   render() {
@@ -35,6 +36,7 @@ export class Application extends React.Component {
           <div className="grid-item">
             <div>
               <h2 className="title2">Ceph status</h2>
+              <CephStatus />
             </div>
           </div>
         </div>
