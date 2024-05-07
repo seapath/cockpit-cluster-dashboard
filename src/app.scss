@@ -9,7 +9,6 @@
     font-weight: bold;
     font-size: 24px;
     text-align: center;
-    margin-top: 50px;
 }
 .title2 {
     font-weight: bold;
@@ -39,9 +38,6 @@ th {
     border: 1px solid rgb(160, 160, 160);
     padding: 8px 10px;
 }
-tr:nth-of-type(odd) td {
-    background-color: #eee;
-}
 tr th[scope=row] {
     background-color: #d6ecd4;
 }
@@ -52,3 +48,38 @@ table {
     font-size: 0.8rem;
     letter-spacing: 1px;
 }
+
+.tree {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.tree li {
+    margin-left: 1.5rem;
+}
+
+.up {
+    color: #77DD76;
+}
+
+.down {
+    color: #FF6962;
+}
+
+.status-indicator {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+.container {
+    display: flex;
+  }
+
+  .left, .right {
+    width: 50%;
+  }
+
