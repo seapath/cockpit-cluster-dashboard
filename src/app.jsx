@@ -14,6 +14,9 @@ export class Application extends React.Component {
     return (
       <div>
         <h1 className="title1">Cluster Dashboard</h1>
+        <div style={{ fontSize: 'small' }}>
+          {"last update: " + new Date().toLocaleString()}
+        </div>
         <div className="grid-container">
           <div className="grid-item">
             <div>
