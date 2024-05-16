@@ -13,13 +13,21 @@ export default class ResourcesStatus extends React.Component {
             resources: [],
             logs: ""
     };
+  }
 
-    cockpit.spawn(["crm", "status"], {superuser: "try"})
-        .stream(output => {
+// Force the two cockpit.spawn() calls to run one after the other.
+async componentDidMount(){
+    await cockpit.spawn(["crm", "status"], {superuser: "try"})
+        .then(output => {
             const resources = this.getResourcesInfos(output);
             const resourcesInfo = this.getResourcesIssues(output);
             this.setState({ resources });
             this.setState({ logs: resourcesInfo });
+        });
+
+    await cockpit.spawn(["crm", "configure", "show"], {superuser: "try"}).then((output) => {
+        const resources = this.getResourcesLocation(output);
+        this.setState({ resources });
         });
   }
 
@@ -42,7 +50,7 @@ export default class ResourcesStatus extends React.Component {
         const type = match[2];
         const state = match[3];
         const host = match[4] || null;
-        resources.push({ name, type, state, host });
+        resources.push({ name, type, state, host, locationType:"-", defaultHost:"-" });
     }
 
     // Match clone sets
@@ -54,15 +62,36 @@ export default class ResourcesStatus extends React.Component {
         const stoppedHosts = match[4] ? match[4].split(/\s+/) : [];
 
         startedHosts.forEach(host => {
-            resources.push({ name: cloneSetName, type, state: "Started", host });
+            resources.push({ name: cloneSetName, type, state: "Started", host, locationType: "-", defaultHost: "-" });
         });
 
         stoppedHosts.forEach(host => {
-            resources.push({ name: cloneSetName, type, state: "Stopped", host });
+            resources.push({ name: cloneSetName, type, state: "Stopped", host, locationType: "-", defaultHost: "-" });
         });
     }
     return resources;
 }
+
+    getResourcesLocation = (output) => {
+        const regex = /(cli-prefer|pin)-(?:\S+)\s(\S+)\s(?:\S+)\sinf:\s(.+)/g;
+        let match;
+        const resources = [...this.state.resources];
+
+        while ((match = regex.exec(output)) !== null) {
+          const resourceName = match[2];
+          const locationType = match[1];
+          const node = match[3];
+          const resourceIndex = resources.findIndex((resource) => resource.name === resourceName);
+          if (resourceIndex !== -1) {
+            resources[resourceIndex] = {
+              ...resources[resourceIndex],
+              locationType,
+              defaultHost: node
+            };
+          }
+        }
+        return resources;
+      };
 
     getResourcesIssues = (output) => {
         const regex = /Failed Resource Actions:(.*)/s;
@@ -84,6 +113,8 @@ export default class ResourcesStatus extends React.Component {
                 <th>State</th>
                 <th>Type</th>
                 <th>Host</th>
+                <th>Location type</th>
+                <th>Default host</th>
                 </tr>
             </thead>
             <tbody>
@@ -93,6 +124,8 @@ export default class ResourcesStatus extends React.Component {
                     <td>{resource.state}</td>
                     <td>{resource.type}</td>
                     <td>{resource.host}</td>
+                    <td>{resource.locationType}</td>
+                    <td>{resource.defaultHost}</td>
                 </tr>
                 ))}
             </tbody>
