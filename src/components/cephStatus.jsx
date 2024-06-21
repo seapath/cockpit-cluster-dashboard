@@ -31,7 +31,7 @@ export default class CephStatus extends React.Component {
     render() {
         return (
             <div>
-                <div>
+                <div id="ceph-logs">
                     {this.state.health.split(';').map((log, index) => (
                         <p key={index} className="text">
                             {log}
@@ -41,19 +41,19 @@ export default class CephStatus extends React.Component {
                 </div>
                 <div className="container">
                     <div className="left">
-                        <button onClick={() => this.setState({ displayOsd: true, displayMon: false, displayMgr: false })}>
+                        <button id="osd-button" onClick={() => this.setState({ displayOsd: true, displayMon: false, displayMgr: false })}>
                             OSD
                         </button>
 
                         <span style={{ margin: '0 10px' }}></span>
 
-                        <button onClick={() => this.setState({ displayOsd: false, displayMon: true, displayMgr: false })}>
+                        <button id="mon-button" onClick={() => this.setState({ displayOsd: false, displayMon: true, displayMgr: false })}>
                             MON
                         </button>
 
                         <span style={{ margin: '0 10px' }}></span>
 
-                        <button onClick={() => this.setState({ displayOsd: false, displayMon: false, displayMgr: true })}>
+                        <button id="mgr-button" onClick={() => this.setState({ displayOsd: false, displayMon: false, displayMgr: true })}>
                             MGR
                         </button>
                         <br/> <br/>

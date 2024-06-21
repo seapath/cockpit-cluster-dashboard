@@ -26,8 +26,8 @@ export default class ClusterStatus extends React.Component {
     render() {
         return (
             <div>
-            <p className="text">{`Status: ${this.state.clusterStatus}`}</p>
-            <p className="text">{`logs: ${this.state.clusterLogs}`}</p>
+            <p id="cluster-status" className="text">{`Status: ${this.state.clusterStatus}`}</p>
+            <p id="cluster-logs" className="text">{`logs: ${this.state.clusterLogs}`}</p>
             </div>
         );
     }

@@ -27,14 +27,14 @@ export default class NodeStatus extends React.Component {
 
     render() {
         return (
-            <div>
-                <p className="text">
+            <div id="node-status-online-offline">
+                <p id="node-status-online-nodes" className="text">
                     { cockpit.format(("online nodes : $0"), this.state.onlineNodes.join(' ')) }
                 </p>
-                <p className="text">
+                <p id="node-status-offline-nodes" className="text">
                     { cockpit.format(("offline nodes : $0"), this.state.offlineNodes.join(' ')) }
                 </p>
-                <p className="text">
+                <p id="other-node-status" className="text">
                     {this.state.otherStatusNodes.map((node, index) => (
                         <span key={index}>{node}<br/></span>
                     ))}

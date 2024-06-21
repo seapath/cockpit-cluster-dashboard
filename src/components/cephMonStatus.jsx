@@ -45,9 +45,9 @@ export default class CephMonStatus extends React.Component {
                 <th>IP</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="mon-table">
                 {this.state.mons.map((mon, index) => (
-                <tr key={index} style={{ backgroundColor: this.isMonInQuorum(mon.name) ? '#77DD76' : '#FF6962' }}>
+                <tr id={`mon-${mon.name}`} key={index} style={{ backgroundColor: this.isMonInQuorum(mon.name) ? '#77DD76' : '#FF6962' }}>
                     <td>{mon.name}</td>
                     <td>{mon.ip}</td>
                 </tr>

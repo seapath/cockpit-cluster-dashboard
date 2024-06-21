@@ -117,9 +117,9 @@ async componentDidMount(){
                 <th>Default host</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="resources-table">
                 {this.state.resources.map((resource, index) => (
-                <tr key={index}>
+                <tr id={`${resource.name}-${resource.host}`} key={index}>
                     <td>{resource.name}</td>
                     <td>{resource.state}</td>
                     <td>{resource.type}</td>
@@ -132,7 +132,7 @@ async componentDidMount(){
             </table>
             <br/>
             <div className="text">
-            <p className="text">Resources failed actions : </p>
+            <p id="resources-logs" className="text">Resources failed actions : </p>
             {logsWithJumpLines.map((line, index) => (
                 <p key={index}>{line}</p>
             ))}

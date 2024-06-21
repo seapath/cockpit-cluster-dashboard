@@ -55,7 +55,7 @@ export default class CephOsdStatus extends React.Component {
         }
 
         return (
-            <div key={id}>
+            <div id={`osd-${name}`} key={id}>
                 {nodeContent}
                 {renderedChildren}
             </div>
