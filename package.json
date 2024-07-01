@@ -1,5 +1,6 @@
 {
   "name": "cluster-dashboard",
+  "version": "1.0.0",
   "description": "cockpit cluster dashboard",
   "type": "module",
   "main": "index.js",
