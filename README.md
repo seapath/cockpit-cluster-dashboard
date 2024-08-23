@@ -3,21 +3,21 @@ SPDX-License-Identifier: Apache-2.0 -->
 
 # cockpit-cluster-dashboard
 
-This is a [Cockpit](https://cockpit-project.org/) plugin displaying general information about a Seapath cluster.
+This is a [Cockpit](https://cockpit-project.org/) plugin displaying general information about a SEAPATH cluster.
 
-Informations displayed:
+Information displayed:
 - Pacemaker node status
 - Pacemaker cluster status
-- Pacemaker ressources status (including VMs)
+- Pacemaker resources status (including VMs)
 - Ceph status (OSD, MON, MGR, Pool RBD)
 
-This plugin requires administrative access to display all the informations.
+This plugin requires administrative access to display all the information.
 
 ## Getting and building the source
 
 This React project uses npm as package manager.
 
-The first build of the plugin requires to run the following command that will install the dependances defined in the package.json. It will also build the sources on the directory /dist.
+The first build of the plugin requires to run the following command that will install the dependencies defined in the package.json. It will also build the sources on the directory /dist.
 ```
 npm run init
 ```
@@ -27,12 +27,18 @@ To rebuild the project, the script build.js can be used using:
 npm run build
 ```
 
-The build files and the dependances can be removed using:
+The build files and the dependencies can be removed using:
 ```
 npm run clean
 ```
 
 ## Installing
+
+### Yocto recipe
+
+The plugin is packaged on SEAPATH Yocto and available by default on the test image.
+
+### Ansible
 
 To install this Cockpit plugin, the build sources located in the /dist directory must be copied to `/usr/share/cockpit/cockpit-cluster-dashboard`.
 The installation can be verified by looking at the list of cockpit packages given by `cockpit-bridge --packages`.
