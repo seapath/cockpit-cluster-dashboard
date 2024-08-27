@@ -31,7 +31,13 @@ export default class ResourcesStatus extends React.Component {
             .then(output => {
                 const resources = this.getResourcesInfos(output);
                 const resourcesInfo = this.getResourcesIssues(output);
-                this.setState({ resources });
+
+                // prevent locationType and defaultHost from being reset to their initial state each time the component is updated.
+                const prevResourcesFiltered = omitResourcesLocation(this.state.resources);
+                const resourcesFiltered = omitResourcesLocation(resources);
+                if(!areArraysEqual(resourcesFiltered, prevResourcesFiltered)){
+                    this.setState({ resources });
+                }
                 this.setState({ logs: resourcesInfo });
             });
 
@@ -151,3 +157,13 @@ export default class ResourcesStatus extends React.Component {
         );
     }
 }
+
+const omitResourcesLocation = (resources) => {
+    return resources.map(({ locationType, defaultHost, ...rest }) => rest);
+};
+
+const areArraysEqual = (arr1, arr2) => {
+    if (JSON.stringify(arr1) !== JSON.stringify(arr2))
+      return false;
+    return true;
+};
