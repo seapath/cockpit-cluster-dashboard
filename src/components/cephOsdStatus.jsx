@@ -7,12 +7,24 @@ import cockpit from 'cockpit';
 import React from 'react';
 
 export default class CephOsdStatus extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             jsonData: null,
         };
+    }
 
+    componentDidMount() {
+        this.fetchOsdStatus();
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.lastUpdate !== prevProps.lastUpdate) {
+            this.fetchOsdStatus();
+        }
+    }
+
+    fetchOsdStatus(){
         cockpit.spawn(["ceph", "osd", "tree", "-f", "json"], {superuser: "try"})
             .then(output => {
                 const jsonData = JSON.parse(output);

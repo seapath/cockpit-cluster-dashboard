@@ -11,8 +11,8 @@ import CephMgrStatus from './cephMgrStatus';
 import CephPoolStatus from './cephPoolStatus';
 
 export default class CephStatus extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             health: "",
             mons: [],
@@ -21,7 +21,19 @@ export default class CephStatus extends React.Component {
             displayMon: false,
             displayMgr: false,
         };
+    }
 
+    componentDidMount() {
+        this.fetchCephStatus();
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.lastUpdate !== prevProps.lastUpdate) {
+            this.fetchCephStatus();
+        }
+    }
+
+    fetchCephStatus(){
         cockpit.spawn(["ceph", "health"], {superuser: "try"})
             .then(output => {
                 this.setState({ health: output.trim() });
@@ -58,14 +70,14 @@ export default class CephStatus extends React.Component {
                         </button>
                         <br/> <br/>
 
-                        {this.state.displayOsd && <CephOsdStatus />}
+                        {this.state.displayOsd && <CephOsdStatus lastUpdate={this.props.lastUpdate}/>}
 
-                        {this.state.displayMon && <CephMonStatus />}
+                        {this.state.displayMon && <CephMonStatus lastUpdate={this.props.lastUpdate}/>}
 
-                        {this.state.displayMgr && <CephMgrStatus />}
+                        {this.state.displayMgr && <CephMgrStatus lastUpdate={this.props.lastUpdate}/>}
                     </div>
                     <div className="right">
-                        <CephPoolStatus />
+                        <CephPoolStatus lastUpdate={this.props.lastUpdate}/>
                     </div>
                 </div>
 
