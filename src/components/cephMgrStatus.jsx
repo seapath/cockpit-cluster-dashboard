@@ -7,13 +7,25 @@ import cockpit from 'cockpit';
 import React from 'react';
 
 export default class CephMgrStatus extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             available: "",
             activeName: "",
         };
+    }
 
+    componentDidMount() {
+        this.fetchMgrStatus();
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.lastUpdate !== prevProps.lastUpdate) {
+            this.fetchMgrStatus();
+        }
+    }
+
+    fetchMgrStatus(){
         cockpit.spawn(["ceph", "mgr", "stat", "-f", "json"], {superuser: "try"})
             .then(output => {
                 const outputJSON = JSON.parse(output);

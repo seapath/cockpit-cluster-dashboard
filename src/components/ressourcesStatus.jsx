@@ -7,29 +7,39 @@ import React from 'react';
 import cockpit from 'cockpit';
 
 export default class ResourcesStatus extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             resources: [],
             logs: ""
     };
   }
 
-// Force the two cockpit.spawn() calls to run one after the other.
-async componentDidMount(){
-    await cockpit.spawn(["crm", "status"], {superuser: "try"})
-        .then(output => {
-            const resources = this.getResourcesInfos(output);
-            const resourcesInfo = this.getResourcesIssues(output);
-            this.setState({ resources });
-            this.setState({ logs: resourcesInfo });
-        });
+    componentDidMount(){
+        this.fetchResources();
+    }
 
-    await cockpit.spawn(["crm", "configure", "show"], {superuser: "try"}).then((output) => {
-        const resources = this.getResourcesLocation(output);
-        this.setState({ resources });
-        });
-  }
+    componentDidUpdate(prevProps) {
+        if (this.props.lastUpdate !== prevProps.lastUpdate) {
+            this.fetchResources();
+        }
+    }
+
+    // Force the two cockpit.spawn() calls to run one after the other.
+    async fetchResources(){
+        await cockpit.spawn(["crm", "status"], {superuser: "try"})
+            .then(output => {
+                const resources = this.getResourcesInfos(output);
+                const resourcesInfo = this.getResourcesIssues(output);
+                this.setState({ resources });
+                this.setState({ logs: resourcesInfo });
+            });
+
+        await cockpit.spawn(["crm", "configure", "show"], {superuser: "try"}).then((output) => {
+            const resources = this.getResourcesLocation(output);
+            this.setState({ resources });
+            });
+    }
 
   getResourcesInfos(output) {
     const resources = [];

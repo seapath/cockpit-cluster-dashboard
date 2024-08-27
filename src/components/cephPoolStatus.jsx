@@ -7,14 +7,26 @@ import cockpit from 'cockpit';
 import React from 'react';
 
 export default class CephPoolStatus extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             stored:0,
             used:0,
             available:0,
         };
+    }
 
+    componentDidMount() {
+        this.fetchPoolStatus();
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.lastUpdate !== prevProps.lastUpdate) {
+            this.fetchPoolStatus();
+        }
+    }
+
+    fetchPoolStatus(){
         cockpit.spawn(["ceph", "df", "-f", "json"], {superuser: "try"})
             .then(output => {
                 const outputJSON = JSON.parse(output);

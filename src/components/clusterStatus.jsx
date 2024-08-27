@@ -7,21 +7,33 @@ import React from 'react';
 import cockpit from 'cockpit';
 
 export default class ClusterStatus extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
         clusterStatus: "",
         clusterLogs: "",
     };
-
-    cockpit.spawn(["crm", "status", "--simple-status"], {superuser: "try"})
-        .then(output => {
-            const clusterStatus = statusRegex(output);
-            this.setState({ clusterStatus });
-            const clusterLogs = logRegex(output);
-            this.setState({ clusterLogs });
-    });
   }
+
+    componentDidMount() {
+        this.fetchClusterStatus();
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.lastUpdate !== prevProps.lastUpdate) {
+            this.fetchClusterStatus();
+        }
+    }
+
+    fetchClusterStatus() {
+        cockpit.spawn(["crm", "status", "--simple-status"], {superuser: "try"})
+            .then(output => {
+                const clusterStatus = statusRegex(output);
+                this.setState({ clusterStatus });
+                const clusterLogs = logRegex(output);
+                this.setState({ clusterLogs });
+            });
+    }
 
     render() {
         return (

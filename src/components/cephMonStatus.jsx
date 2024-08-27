@@ -7,13 +7,25 @@ import cockpit from 'cockpit';
 import React from 'react';
 
 export default class CephMonStatus extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             mons: [],
             quorumNames: [],
         };
+    }
 
+    componentDidMount() {
+        this.fetchMonStatus();
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.lastUpdate !== prevProps.lastUpdate) {
+            this.fetchMonStatus();
+        }
+    }
+
+    fetchMonStatus(){
         cockpit.spawn(["ceph", "quorum_status"], {superuser: "try"})
             .then(output => {
                 const outputJSON = JSON.parse(output);

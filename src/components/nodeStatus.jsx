@@ -7,8 +7,8 @@ import cockpit from 'cockpit';
 import React from 'react';
 
 export default class NodeStatus extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             onlineNodes: [],
             offlineNodes: [],
@@ -18,7 +18,19 @@ export default class NodeStatus extends React.Component {
             guestOfflineNodes: [],
             otherStatusNodes: [],
         };
+    }
 
+    componentDidMount() {
+        this.fetchNodeStatus();
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.lastUpdate !== prevProps.lastUpdate) {
+            this.fetchNodeStatus();
+        }
+    }
+
+    fetchNodeStatus() {
         cockpit.spawn(["crm", "status", "--exclude=all", "--include=nodes"], {superuser: "try"})
             .then(output => {
                 const onlineNodes = extractNodesStatus(output,"Online");
