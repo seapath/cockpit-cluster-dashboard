@@ -5,6 +5,7 @@
 
 import cockpit from 'cockpit';
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export default class CephMonStatus extends React.Component {
     constructor(props) {
@@ -70,3 +71,7 @@ export default class CephMonStatus extends React.Component {
         );
     }
 }
+
+CephMonStatus.propTypes = {
+    lastUpdate: PropTypes.number,
+};

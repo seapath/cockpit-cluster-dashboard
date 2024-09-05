@@ -5,6 +5,7 @@
 
 import React from 'react';
 import cockpit from 'cockpit';
+import PropTypes from 'prop-types';
 
 export default class ResourcesStatus extends React.Component {
     constructor(props) {
@@ -166,4 +167,8 @@ const areArraysEqual = (arr1, arr2) => {
     if (JSON.stringify(arr1) !== JSON.stringify(arr2))
       return false;
     return true;
+};
+
+ResourcesStatus.propTypes = {
+    lastUpdate: PropTypes.number,
 };

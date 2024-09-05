@@ -5,6 +5,7 @@
 
 import cockpit from 'cockpit';
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export default class NodeStatus extends React.Component {
     constructor(props) {
@@ -123,4 +124,8 @@ const extractOtherStatus = (output) => {
     }
 
     return matchArray;
+};
+
+NodeStatus.propTypes = {
+    lastUpdate: PropTypes.number,
 };

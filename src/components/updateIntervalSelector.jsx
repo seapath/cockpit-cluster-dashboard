@@ -4,6 +4,7 @@
  */
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import { SyncAltIcon } from "@patternfly/react-icons";
 import { Select, SelectList, SelectOption, MenuToggle } from '@patternfly/react-core';
 
@@ -84,3 +85,7 @@ export default class UpdateIntervalSelector extends React.Component {
         );
     }
 }
+
+UpdateIntervalSelector.propTypes = {
+  onUpdate: PropTypes.func.isRequired,
+};
