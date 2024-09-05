@@ -5,6 +5,7 @@
 
 import cockpit from 'cockpit';
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import {Table, Thead, Tr, Th, Tbody, Td} from '@patternfly/react-table';
 
@@ -78,3 +79,7 @@ export default class CephMonStatus extends React.Component {
         );
     }
 }
+
+CephMonStatus.propTypes = {
+    lastUpdate: PropTypes.number,
+};

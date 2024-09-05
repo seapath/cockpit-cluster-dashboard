@@ -5,6 +5,7 @@
 
 import cockpit from 'cockpit';
 import React from 'react';
+import PropTypes from 'prop-types';
 import CephMonStatus from './cephMonStatus';
 import CephOsdStatus from './cephOsdStatus';
 import CephMgrStatus from './cephMgrStatus';
@@ -84,3 +85,7 @@ export default class CephStatus extends React.Component {
         );
     }
 }
+
+CephStatus.propTypes = {
+    lastUpdate: PropTypes.number,
+};

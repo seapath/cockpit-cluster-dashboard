@@ -5,6 +5,7 @@
 
 import React from 'react';
 import cockpit from 'cockpit';
+import PropTypes from 'prop-types';
 
 export default class ClusterStatus extends React.Component {
   constructor(props) {
@@ -56,4 +57,8 @@ const logRegex = (output) => {
     const regexMatch = regex.exec(output);
     const logs = regexMatch && regexMatch[1] ? regexMatch[1] : "";
     return logs;
+};
+
+ClusterStatus.propTypes = {
+    lastUpdate: PropTypes.number,
 };

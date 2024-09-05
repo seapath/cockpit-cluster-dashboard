@@ -5,6 +5,7 @@
 
 import cockpit from 'cockpit';
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export default class CephOsdStatus extends React.Component {
     constructor(props) {
@@ -103,3 +104,7 @@ function getStatusColor(status) {
             return 'gray';
     }
 }
+
+CephOsdStatus.propTypes = {
+    lastUpdate: PropTypes.number,
+};
