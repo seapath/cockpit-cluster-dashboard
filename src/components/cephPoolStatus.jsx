@@ -6,6 +6,8 @@
 import cockpit from 'cockpit';
 import React from 'react';
 
+import {Table, Thead, Tr, Th, Tbody, Td} from '@patternfly/react-table';
+
 export default class CephPoolStatus extends React.Component {
     constructor(props) {
         super(props);
@@ -43,23 +45,23 @@ export default class CephPoolStatus extends React.Component {
     render() {
         return (
             <div>
-                <h4 className="text"> Pool RBD: </h4>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Data stored</th>
-                            <th>Space used</th>
-                            <th>Space available</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>{ cockpit.format_bytes(this.state.stored) }</td>
-                            <td>{ cockpit.format_bytes(this.state.used) }</td>
-                            <td>{ cockpit.format_bytes(this.state.available) }</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <label className='title3'>Pool RBD</label>
+                <Table variant='compact'>
+                    <Thead>
+                        <Tr>
+                            <Th>Data stored</Th>
+                            <Th>Space used</Th>
+                            <Th>Space available</Th>
+                        </Tr>
+                    </Thead>
+                    <Tbody>
+                        <Tr>
+                            <Td>{ cockpit.format_bytes(this.state.stored) }</Td>
+                            <Td>{ cockpit.format_bytes(this.state.used) }</Td>
+                            <Td>{ cockpit.format_bytes(this.state.available) }</Td>
+                        </Tr>
+                    </Tbody>
+                </Table>
             </div>
         );
     }
