@@ -84,7 +84,7 @@ export default class CephOsdStatus extends React.Component {
 
         return (
             <div>
-                <h4 className="text">OSD list: </h4>
+                <label className="title3">Ceph object storage daemons</label>
                 <ul className="tree">
                     <li>{this.renderOSD(rootNode)}</li>
                 </ul>
