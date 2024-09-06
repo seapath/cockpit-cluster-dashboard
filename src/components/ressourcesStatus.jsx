@@ -6,6 +6,8 @@
 import React from 'react';
 import cockpit from 'cockpit';
 
+import {Table, Thead, Tr, Th, Tbody, Td} from '@patternfly/react-table';
+
 export default class ResourcesStatus extends React.Component {
     constructor(props) {
         super(props);
@@ -117,38 +119,57 @@ export default class ResourcesStatus extends React.Component {
         return failedActions;
     }
 
+    jumpToConsole = (resourceName) => {
+        cockpit.jump(`cockpit-cluster-vm-management#/console/${resourceName}`);
+    }
+
     render() {
         const logsWithJumpLines = this.state.logs.split('\n');
         return (
         <div>
-            <h3 className="title3">Resources on the cluster</h3>
-            <table>
-            <thead>
-                <tr>
-                <th>Name</th>
-                <th>State</th>
-                <th>Type</th>
-                <th>Host</th>
-                <th>Location type</th>
-                <th>Default host</th>
-                </tr>
-            </thead>
-            <tbody id="resources-table">
-                {this.state.resources.map((resource, index) => (
-                <tr id={`${resource.name}-${resource.host}`} key={index}>
-                    <td>{resource.name}</td>
-                    <td>{resource.state}</td>
-                    <td>{resource.type}</td>
-                    <td>{resource.host}</td>
-                    <td>{resource.locationType}</td>
-                    <td>{resource.defaultHost}</td>
-                </tr>
-                ))}
-            </tbody>
-            </table>
+            <label className="title3">Resources on the cluster</label>
+            <Table variant='compact'>
+                <Thead>
+                <Tr>
+                    <Th textCenter>Name</Th>
+                    <Th textCenter>State</Th>
+                    <Th textCenter>Type</Th>
+                    <Th textCenter>Host</Th>
+                    <Th textCenter modifier="wrap">Location type</Th>
+                    <Th textCenter modifier="wrap">Default host</Th>
+                </Tr>
+                </Thead>
+                    <Tbody>
+                        {this.state.resources.map((resource, index) => {
+                            // The console is only accessible to virtual machines
+                            const isClickable = resource.type === "ocf::seapath:VirtualDomain";
+                            return (
+                                <Tr
+                                    id={`${resource.name}-${resource.host}`}
+                                    key={index}
+                                    className={isClickable ? "clickable-row" : ""}
+                                    isSelectable={isClickable}
+                                    isClickable={isClickable}
+                                    onRowClick={() => {
+                                        if (isClickable) {
+                                            this.jumpToConsole(resource.name);
+                                        }
+                                    }}
+                                >
+                                    <Td dataLabel="Name" textCenter>{resource.name}</Td>
+                                    <Td dataLabel="State" textCenter>{resource.state}</Td>
+                                    <Td dataLabel="Type" textCenter>{resource.type}</Td>
+                                    <Td dataLabel="Host" textCenter>{resource.host}</Td>
+                                    <Td dataLabel="Location type" textCenter>{resource.locationType}</Td>
+                                    <Td dataLabel="Default host" textCenter>{resource.defaultHost}</Td>
+                                </Tr>
+                            );
+                        })}
+                    </Tbody>
+            </Table>
             <br/>
             <div className="text">
-            <p id="resources-logs" className="text">Resources failed actions : </p>
+            <label id="resources-logs" className='title3'>Resources failed actions:</label>
             {logsWithJumpLines.map((line, index) => (
                 <p key={index}>{line}</p>
             ))}
