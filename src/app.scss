@@ -15,38 +15,17 @@
     font-size: 18px;
 }
 .title3 {
-    font-size: 18px;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
 }
 .text {
     font-size: 16px;
 }
 
-.grid-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto;
-    gap: 20px;
-  }
-
-  .grid-item {
+.grid-item {
     border: 1px solid #ccc;
     padding: 20px;
-  }
-
-td,
-th {
-    border: 1px solid rgb(160, 160, 160);
-    padding: 8px 10px;
-}
-tr th[scope=row] {
-    background-color: #d6ecd4;
-}
-table {
-    border-collapse: collapse;
-    border: 2px solid rgb(140, 140, 140);
-    font-family: sans-serif;
-    font-size: 0.8rem;
-    letter-spacing: 1px;
 }
 
 .tree {
@@ -74,12 +53,3 @@ table {
     margin-right: 5px;
     vertical-align: middle;
 }
-
-.container {
-    display: flex;
-  }
-
-  .left, .right {
-    width: 50%;
-  }
-
