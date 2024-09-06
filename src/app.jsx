@@ -10,6 +10,8 @@ import ResourcesStatus from './components/ressourcesStatus';
 import CephStatus from './components/cephStatus';
 import UpdateIntervalSelector from './components/updateIntervalSelector';
 
+import { Grid, GridItem } from '@patternfly/react-core';
+
 export class Application extends React.Component {
   constructor() {
     super();
@@ -30,36 +32,32 @@ export class Application extends React.Component {
           <div style={{ fontSize: 'small' }}>
             {"last update: " + new Date().toLocaleString()}
           </div>
-          <UpdateIntervalSelector
+            <UpdateIntervalSelector
             onUpdate={this.handleUpdate}
           />
         </div>
-        <div className="grid-container">
-          <div className="grid-item">
-            <div>
-              <h2 className="title2">Node Status</h2>
-              <NodeStatus lastUpdate={this.state.lastUpdate} />
-            </div>
-          </div>
-          <div className="grid-item">
-            <div>
-              <h2 className="title2">Cluster Status</h2>
-              <ClusterStatus lastUpdate={this.state.lastUpdate} />
-            </div>
-          </div>
-          <div className="grid-item">
-            <div>
-              <h2 className="title2">Resources Status</h2>
-              <ResourcesStatus lastUpdate={this.state.lastUpdate} />
-            </div>
-          </div>
-          <div className="grid-item">
-            <div>
-              <h2 className="title2">Ceph status</h2>
-              <CephStatus lastUpdate={this.state.lastUpdate} />
-            </div>
-          </div>
-        </div>
+
+        <Grid hasGutter>
+        <GridItem span={4} className="grid-item">
+            <h2 className="title2">Cluster Status</h2>
+            <ClusterStatus lastUpdate={this.state.lastUpdate} />
+          </GridItem>
+
+          <GridItem span={4} className="grid-item">
+            <h2 className="title2">Node Status</h2>
+            <NodeStatus lastUpdate={this.state.lastUpdate} />
+          </GridItem>
+
+          <GridItem span={4} rowSpan={2} className="grid-item">
+            <h2 className="title2">Ceph status</h2>
+            <CephStatus lastUpdate={this.state.lastUpdate} />
+          </GridItem>
+
+          <GridItem span={8} className="grid-item">
+            <h2 className="title2">Resources Status</h2>
+            <ResourcesStatus lastUpdate={this.state.lastUpdate} />
+          </GridItem>
+        </Grid>
       </div>
     );
   }
