@@ -6,6 +6,8 @@
 import cockpit from 'cockpit';
 import React from 'react';
 
+import {Table, Thead, Tr, Th, Tbody, Td} from '@patternfly/react-table';
+
 export default class CephMonStatus extends React.Component {
     constructor(props) {
         super(props);
@@ -49,23 +51,29 @@ export default class CephMonStatus extends React.Component {
     render() {
         return (
             <div>
-            <h4 className="text">MON list: </h4>
-            <table>
-            <thead>
-                <tr>
-                <th>Name</th>
-                <th>IP</th>
-                </tr>
-            </thead>
-            <tbody id="mon-table">
-                {this.state.mons.map((mon, index) => (
-                <tr id={`mon-${mon.name}`} key={index} style={{ backgroundColor: this.isMonInQuorum(mon.name) ? '#77DD76' : '#FF6962' }}>
-                    <td>{mon.name}</td>
-                    <td>{mon.ip}</td>
-                </tr>
-                ))}
-            </tbody>
-            </table>
+                <label className='title3'>Ceph monitor daemons</label>
+                <Table variant='compact'>
+                    <Thead>
+                    <Tr>
+                        <Th textCenter>Name</Th>
+                        <Th textCenter>IP</Th>
+                    </Tr>
+                    </Thead>
+                    <Tbody id="mon-table">
+                        {this.state.mons.map((mon, index) => (
+                        <Tr
+                            id={`mon-${mon.name}`}
+                            key={index}
+                            style={{
+                                backgroundColor: this.isMonInQuorum(mon.name) ? '#4ed86033' : '#d83d3d33',
+                            }}
+                        >
+                            <Td textCenter>{mon.name}</Td>
+                            <Td textCenter>{mon.ip}</Td>
+                        </Tr>
+                        ))}
+                    </Tbody>
+                </Table>
             </div>
         );
     }
