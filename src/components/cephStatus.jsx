@@ -17,7 +17,7 @@ export default class CephStatus extends React.Component {
             health: "",
             mons: [],
             quorumNames: [],
-            displayOsd: false,
+            displayOsd: true,
             displayMon: false,
             displayMgr: false,
         };
@@ -51,32 +51,31 @@ export default class CephStatus extends React.Component {
                     ))}
                     <br />
                 </div>
-                <div className="container">
-                    <div className="left">
-                        <button id="osd-button" onClick={() => this.setState({ displayOsd: true, displayMon: false, displayMgr: false })}>
-                            OSD
-                        </button>
+                <div>
+                    <button id="osd-button" onClick={() => this.setState({ displayOsd: true, displayMon: false, displayMgr: false })}>
+                        OSD
+                    </button>
 
-                        <span style={{ margin: '0 10px' }}></span>
+                    <span style={{ margin: '0 10px' }}></span>
 
-                        <button id="mon-button" onClick={() => this.setState({ displayOsd: false, displayMon: true, displayMgr: false })}>
-                            MON
-                        </button>
+                    <button id="mon-button" onClick={() => this.setState({ displayOsd: false, displayMon: true, displayMgr: false })}>
+                        MON
+                    </button>
 
-                        <span style={{ margin: '0 10px' }}></span>
+                    <span style={{ margin: '0 10px' }}></span>
 
-                        <button id="mgr-button" onClick={() => this.setState({ displayOsd: false, displayMon: false, displayMgr: true })}>
-                            MGR
-                        </button>
-                        <br/> <br/>
+                    <button id="mgr-button" onClick={() => this.setState({ displayOsd: false, displayMon: false, displayMgr: true })}>
+                        MGR
+                    </button>
+                    <br/> <br/>
 
-                        {this.state.displayOsd && <CephOsdStatus lastUpdate={this.props.lastUpdate}/>}
+                    {this.state.displayOsd && <CephOsdStatus lastUpdate={this.props.lastUpdate}/>}
 
-                        {this.state.displayMon && <CephMonStatus lastUpdate={this.props.lastUpdate}/>}
+                    {this.state.displayMon && <CephMonStatus lastUpdate={this.props.lastUpdate}/>}
 
-                        {this.state.displayMgr && <CephMgrStatus lastUpdate={this.props.lastUpdate}/>}
-                    </div>
-                    <div className="right">
+                    {this.state.displayMgr && <CephMgrStatus lastUpdate={this.props.lastUpdate}/>}
+
+                    <div style={{ marginTop: '50px'}}>
                         <CephPoolStatus lastUpdate={this.props.lastUpdate}/>
                     </div>
                 </div>
