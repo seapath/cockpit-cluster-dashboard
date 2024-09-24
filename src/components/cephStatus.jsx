@@ -4,6 +4,7 @@
  */
 
 import cockpit from 'cockpit';
+import { Button } from '@patternfly/react-core';
 import React from 'react';
 import PropTypes from 'prop-types';
 import CephMonStatus from './cephMonStatus';
@@ -53,21 +54,33 @@ export default class CephStatus extends React.Component {
                     <br />
                 </div>
                 <div>
-                    <button id="osd-button" onClick={() => this.setState({ displayOsd: true, displayMon: false, displayMgr: false })}>
+                    <Button
+                        id="osd-button"
+                        variant="secondary"
+                        onClick={() => this.setState({ displayOsd: true, displayMon: false, displayMgr: false })}
+                    >
                         OSD
-                    </button>
+                    </Button>
 
                     <span style={{ margin: '0 10px' }}></span>
 
-                    <button id="mon-button" onClick={() => this.setState({ displayOsd: false, displayMon: true, displayMgr: false })}>
+                    <Button
+                        id="mon-button"
+                        variant="secondary"
+                        onClick={() => this.setState({ displayOsd: false, displayMon: true, displayMgr: false })}
+                    >
                         MON
-                    </button>
+                    </Button>
 
                     <span style={{ margin: '0 10px' }}></span>
 
-                    <button id="mgr-button" onClick={() => this.setState({ displayOsd: false, displayMon: false, displayMgr: true })}>
+                    <Button
+                        id="mgr-button"
+                        variant="secondary"
+                        onClick={() => this.setState({ displayOsd: false, displayMon: false, displayMgr: true })}
+                    >
                         MGR
-                    </button>
+                    </Button>
                     <br/> <br/>
 
                     {this.state.displayOsd && <CephOsdStatus lastUpdate={this.props.lastUpdate}/>}
