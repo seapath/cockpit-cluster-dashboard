@@ -4,12 +4,15 @@ on:
   release:
     types: [created]
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
           node-version: 20
 
@@ -19,11 +22,6 @@ jobs:
         run: tar -czvf cockpit-cluster-dashboard.tar.gz -C dist/ .
 
       - name: Upload artifact
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v2
         with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./cockpit-cluster-dashboard.tar.gz
-          asset_name: cockpit-cluster-dashboard.tar.gz
-          asset_content_type: application/gzip
+          files: ./cockpit-cluster-dashboard.tar.gz
