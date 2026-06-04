@@ -14,7 +14,7 @@
   },
   "devDependencies": {
     "cockpit-repo": "git+https://github.com/cockpit-project/cockpit.git#d34cabacb8e5e1e028c7eea3d6e3b606d862b8ac",
-    "esbuild": "^0.25.8",
+    "esbuild": "^0.27.3",
     "esbuild-plugin-copy": "2.1.1",
     "esbuild-plugin-replace": "1.4.0",
     "esbuild-sass-plugin": "^3.3.1",
