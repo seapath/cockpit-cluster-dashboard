@@ -2,7 +2,7 @@ name: Build and publish Cockpit cluster dashboard plugin
 
 on:
   release:
-    types: [created]
+    types: [published]
 
 permissions:
   contents: write
