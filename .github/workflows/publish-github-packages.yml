@@ -22,6 +22,6 @@ jobs:
         run: tar -czvf cockpit-cluster-dashboard.tar.gz -C dist/ .
 
       - name: Upload artifact
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           files: ./cockpit-cluster-dashboard.tar.gz
