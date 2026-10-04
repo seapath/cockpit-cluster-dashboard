@@ -6,6 +6,7 @@
 import cockpit from 'cockpit';
 import React from 'react';
 import PropTypes from 'prop-types';
+import { extractNodesStatus, extractOtherStatus } from '../lib/parsing';
 
 export default class NodeStatus extends React.Component {
     constructor(props) {
@@ -99,32 +100,6 @@ export default class NodeStatus extends React.Component {
         );
     }
 }
-
-const extractNodesStatus = (output, status) => {
-    // Get the list of nodes for a given status
-    // Ex with status = "Online":
-    // Online: [ adv-1 nuc1 observer ] -> adv-1 nuc1 observer
-    const statusNodesRegex = new RegExp(`${status}:\\s+\\[\\s*([^\\]]+)\\s*\\]`);
-    const nodesMatch = statusNodesRegex.exec(output);
-    // If there is a match with the regex and the online node list is not empty, we collect them in an array
-    const nodeList = nodesMatch && nodesMatch[1] ? nodesMatch[1].split(' ') : [];
-
-    return nodeList;
-};
-
-// The nodes can also be in maintenance or standby mode
-const extractOtherStatus = (output) => {
-    const regex = /^\s*\* Node.*$/gm;
-
-    const matchArray = [];
-    let match;
-
-    while ((match = regex.exec(output)) !== null) {
-        matchArray.push(match[0]);
-    }
-
-    return matchArray;
-};
 
 NodeStatus.propTypes = {
     lastUpdate: PropTypes.number,

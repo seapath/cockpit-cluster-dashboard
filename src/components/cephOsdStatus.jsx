@@ -6,6 +6,7 @@
 import cockpit from 'cockpit';
 import React from 'react';
 import PropTypes from 'prop-types';
+import { getStatusColor } from '../lib/parsing';
 
 export default class CephOsdStatus extends React.Component {
     constructor(props) {
@@ -91,17 +92,6 @@ export default class CephOsdStatus extends React.Component {
                 </ul>
             </div>
         );
-    }
-}
-
-function getStatusColor(status) {
-    switch (status) {
-        case 'up':
-            return 'green';
-        case 'down':
-            return 'red';
-        default:
-            return 'gray';
     }
 }
 
