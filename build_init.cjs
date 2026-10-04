@@ -9,7 +9,7 @@ const fs = require('fs-extra');
 const path = require('path');
 const { execSync } = require('child_process');
 
-const NODE_MODULES_STAMP = 'package-lock.json';
+const NODE_MODULES_STAMP = 'node_modules/.package-lock.json';
 const COCKPIT_REPO_FILE = 'pkg/lib';
 
 // Function to execute shell command synchronously
@@ -27,13 +27,20 @@ function copyCockpitLib() {
 }
 
 function dependenciesChanged() {
-  const nodeModulesStampPath = path.resolve(__dirname, NODE_MODULES_STAMP);
+  const stampPath = path.resolve(__dirname, NODE_MODULES_STAMP);
+  const lockfilePath = path.resolve(__dirname, 'package-lock.json');
+  const packagePath = path.resolve(__dirname, 'package.json');
 
-// Checks if package-lock.json is older than package.json
-  if (!fs.existsSync(nodeModulesStampPath)) return true;
-  const packageLockStats = fs.statSync(nodeModulesStampPath);
-  const packageStats = fs.statSync('package.json');
-  return packageStats.mtimeMs > packageLockStats.mtimeMs;
+  // Reinstall when the installed tree is missing or predates the manifest or
+  // the committed lockfile. Comparing against the lockfile makes the install
+  // reproducible instead of depending on when node_modules was last touched.
+  if (!fs.existsSync(stampPath) || !fs.existsSync(lockfilePath)) return true;
+
+  const stampStats = fs.statSync(stampPath);
+  return (
+    fs.statSync(packagePath).mtimeMs > stampStats.mtimeMs ||
+    fs.statSync(lockfilePath).mtimeMs > stampStats.mtimeMs
+  );
 }
 
 function buildDist() {
@@ -45,7 +52,6 @@ function buildDist() {
 
 function clean() {
   const directoriesToRemove = ['dist', 'node_modules', 'pkg'];
-  const fileToRemove = 'package-lock.json';
 
   directoriesToRemove.forEach(dir => {
     const dirPath = path.resolve(__dirname, dir);
@@ -55,20 +61,12 @@ function clean() {
     } catch (err) {
       console.error(`Failed to remove ${dir}:`, err);
     }
-
-    const filePath = path.resolve(__dirname, fileToRemove);
-    try {
-      fs.removeSync(filePath);
-      console.log(`File ${fileToRemove} removed with succes`);
-    } catch (err) {
-      console.error(`Failed to remove ${fileToRemove}:`, err);
-    }
   });
 }
 
 function main() {
   if (dependenciesChanged()) {
-    runCommand('npm install');
+    runCommand('npm ci');
   }
   copyCockpitLib();
 

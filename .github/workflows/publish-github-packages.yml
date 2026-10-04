@@ -9,17 +9,37 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version-file: .nvmrc
+          cache: npm
 
-      - run: npm run init
+      # npm ci installs the exact dependency tree from the committed lockfile,
+      # which is what makes the build reproducible.
+      - name: Install dependencies
+        run: npm ci
 
+      - name: Prepare cockpit libraries and build
+        run: node build_init.cjs
+
+      # Deterministic packaging: a stable file order, zeroed ownership and
+      # timestamps and gzip without its own timestamp header, so the archive is
+      # bit-for-bit reproducible.
       - name: Pack dist folder
-        run: tar -czvf cockpit-cluster-dashboard.tar.gz -C dist/ .
+        env:
+          LC_ALL: C
+          SOURCE_DATE_EPOCH: 0
+        run: |
+          tar \
+            --sort=name \
+            --mtime='@0' \
+            --owner=0 --group=0 --numeric-owner \
+            --mode='go+u,go-w' \
+            --pax-option=exthdr.name=%d/PaxHeaders/%f,delete=atime,delete=ctime \
+            -cf - -C dist . | gzip -9n > cockpit-cluster-dashboard.tar.gz
 
       - name: Upload artifact
         uses: softprops/action-gh-release@v3
