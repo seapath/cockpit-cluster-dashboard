@@ -6,6 +6,7 @@
 import React from 'react';
 import cockpit from 'cockpit';
 import PropTypes from 'prop-types';
+import { parseClusterLogs, parseClusterStatus } from '../lib/parsing';
 
 export default class ClusterStatus extends React.Component {
   constructor(props) {
@@ -29,9 +30,9 @@ export default class ClusterStatus extends React.Component {
     fetchClusterStatus() {
         cockpit.spawn(["crm", "status", "--simple-status"], {superuser: "try"})
             .then(output => {
-                const clusterStatus = statusRegex(output);
+                const clusterStatus = parseClusterStatus(output);
                 this.setState({ clusterStatus });
-                const clusterLogs = logRegex(output);
+                const clusterLogs = parseClusterLogs(output);
                 this.setState({ clusterLogs });
             });
     }
@@ -45,19 +46,6 @@ export default class ClusterStatus extends React.Component {
         );
     }
 }
-
-const statusRegex = (output) => {
-    const regex = /(CLUSTER.*?)\s*(?=:)/;
-    const regexMatch = regex.exec(output);
-    return regexMatch[0];
-};
-
-const logRegex = (output) => {
-    const regex = /CLUSTER WARN:(.*)/;
-    const regexMatch = regex.exec(output);
-    const logs = regexMatch && regexMatch[1] ? regexMatch[1] : "";
-    return logs;
-};
 
 ClusterStatus.propTypes = {
     lastUpdate: PropTypes.number,
