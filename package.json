@@ -7,8 +7,12 @@
   "repository": "",
   "author": "",
   "license": "Apache-2.0",
+  "engines": {
+    "node": ">=20.19.4 <21"
+  },
+  "packageManager": "npm@10.8.2",
   "scripts": {
-    "init": "npm install && node build_init.cjs",
+    "init": "npm ci && node build_init.cjs",
     "build": "node build.js",
     "clean": "node build_init.cjs --clean",
     "test": "vitest run",
