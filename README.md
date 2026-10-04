@@ -32,6 +32,44 @@ The build files and the dependencies can be removed using:
 npm run clean
 ```
 
+### Reproducible build
+
+Dependencies are installed from the committed `package-lock.json` with `npm ci`,
+and the source tree is built with a pinned Node.js version (see `.nvmrc` and the
+`engines` field in `package.json`). The same source therefore produces the same
+files in `dist/`.
+
+The release archive is packed with a stable file order and without timestamps
+or ownership information, so it is bit-for-bit reproducible. To rebuild and
+verify:
+
+```
+npm ci
+node build_init.cjs
+LC_ALL=C tar --sort=name --mtime='@0' --owner=0 --group=0 --numeric-owner \
+    --mode='go+u,go-w' \
+    --pax-option=exthdr.name=%d/PaxHeaders/%f,delete=atime,delete=ctime \
+    -cf - -C dist . | gzip -9n > cockpit-cluster-dashboard.tar.gz
+sha256sum cockpit-cluster-dashboard.tar.gz
+```
+
+Running the packaging step twice from a clean checkout must produce identical
+checksums.
+
+## Tests
+
+Unit tests use [Vitest](https://vitest.dev/) and cover the sources in `src/`.
+Install the dependencies and run:
+
+```
+npm ci
+npm test              # run the suite once
+npm run coverage      # same run, with the coverage gate
+```
+
+`npm run coverage` enforces at least 90% statement and 80% branch coverage.
+CI also runs the build (`node build_init.cjs`) to make sure it still works.
+
 ## Installing
 
 ### Yocto recipe
